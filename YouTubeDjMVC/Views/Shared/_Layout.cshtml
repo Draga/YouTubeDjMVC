@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html ng-app="dj">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    <script type="application/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js"></script>
+    <!--<script type="application/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>-->
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    @Scripts.Render("~/Scripts/frntScript.js")
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+
+    @Styles.Render("~/Content/css")
+
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <header class="page-header text-center">
+        <h1>
+            YoutTube DJ
+            <small>A collaborative video queue</small>
+        </h1>
+    </header>
+    <div class="container">
+
+        @RenderBody()
+    </div>
+</body>
+</html>

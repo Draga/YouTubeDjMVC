@@ -1,0 +1,44 @@
+﻿@model IEnumerable<YouTubeDjMVC.Models.Video>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div ng-controller="VideoController as videoCtrl">
+    <div class="row">
+        <div ng-show="errorMessage" class="alert alert-danger">
+            {{errorMessage}}
+        </div>
+        <form id="search" name="videoForm" ng-submit="videoCtrl.search()" novalidate>
+            <div class="form-group has-feedback">
+                <input class="form-control" type="text" ng-model="search.text" name="searchText" id="searchText"
+                       placeholder="Search on YouTube"
+                       typeahead="queries for queries in getAutocompletion($viewValue)"
+                       typeahead-loading="loadingAutocompletion"
+                       required autofocus autocomplete="off" />
+                <i ng-show="loadingAutocompletion" class="glyphicon glyphicon-refresh form-control-feedback spin"></i>
+            </div>
+            <button ng-hide="results.length" class="btn btn-default">Add</button>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 col-md-3" ng-repeat="result in results">
+            <div class="thumbnail">
+                <img ng-src="http://i.ytimg.com/vi/{{result.id.$t.split(':').reverse()[0]}}/mqdefault.jpg" />
+                <h3>{{result.title.$t}}</h3>
+                <p>
+                    <button class="btn btn-primary" ng-click="videoCtrl.addVideo(result)">Add</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">&nbsp;</div>
+
+    <div class="row">
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="video in videos">{{video.Title}}</li>
+        </ul>
+    </div>
+</div>
