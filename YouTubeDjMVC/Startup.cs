@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNet.SignalR;
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(YouTubeDjMVC.Startup))]
@@ -10,7 +11,7 @@ namespace YouTubeDjMVC
         {
             ConfigureAuth(app);
 
-            app.MapSignalR();
+            app.MapSignalR(new HubConfiguration() { EnableDetailedErrors = true });
         }
     }
 }

@@ -44,7 +44,7 @@ namespace YouTubeDjMVC.Controllers
 
         private static void UpdateClients()
         {
-            var hubContext = GlobalHost.ConnectionManager.GetHubContext<VideoHub>();
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<Videos>();
             hubContext.Clients.All.VideoAdded();
         }
 

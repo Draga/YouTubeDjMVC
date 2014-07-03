@@ -73,28 +73,29 @@
             return dfr.promise;
         };
 
+        $(document).ready(function () {
+            $('input#searchText').focus();
+            //$('input#searchText').typeahead();
+    
+            /** SIGNALR **/
+   
+            // Declare a function on the chat hub so the server can invoke it
+            var videos = $.connection.videos;
 
+            videos.client.videoAdded = function () {
+                //alert(scope);
+                $scope.getVideoList();
+                //alert(app);
+            };
+    
+            $.connection.hub.logging = true;
+    
+            // Start the connection
+            $.connection.hub.start().done(function() {
+                console.log('SignalR connected as ID: ' + $.connection.hub.id);
+            });
+        });
+        
         $scope.getVideoList();
     }]);
 })();
-
-$(document).ready(function () {
-    $('input#searchText').focus();
-    //$('input#searchText').typeahead();
-    
-    /** SIGNALR **/
-
-    // Proxy created on the fly
-    //var videoHub = $.connection.videoHub;
-    alert("2" + $.connection.VideoHub);
-    alert("1" + $.connection.videoHub);
-   
-
-    // Declare a function on the chat hub so the server can invoke it
-    videoHub.VideoAdded = function () {
-        alert("Video Added");
-    };
-    
-    // Start the connection
-    $.connection.hub.start();
-});

@@ -2,7 +2,7 @@
 
 namespace YouTubeDjMVC.Hubs
 {
-    public class VideoHub : Hub
+    public class Videos : Hub
     {
     }
 }
