@@ -21,7 +21,7 @@
                 if (!$data.Success) {
                     $scope.errorMessage = $data.Message;
                 }
-                $scope.resultts = [];
+                $scope.results = [];
                 $scope.search = {};
             })
             .error(function ($data) {
