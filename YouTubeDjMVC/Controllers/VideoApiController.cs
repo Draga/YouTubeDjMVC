@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Data.Entity.Validation;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Microsoft.AspNet.SignalR;
@@ -24,18 +26,20 @@ namespace YouTubeDjMVC.Controllers
         [ResponseType(typeof(Response))]
         public Response PostYouTubeVideo(dynamic youTubeVideo)
         {
-            var video = new Video(youTubeVideo);
-            db.Videos.Add(video);
+            try
+            {
+                var video = new Video(youTubeVideo);
+                db.Videos.Add(video);
 
-            // TODO: validate
-            //IEnumerable<DbEntityValidationResult> validationErrors = db.GetValidationErrors();
-            //if (validationErrors.Any())
-            //{
-            //    //return BadRequest(ModelState);
-            //    return new ErrorResponse("Validation error" + validationErrors.Select(e=>e.Entry.CurrentValues.PropertyNames));
-            //}
-
-            db.SaveChanges();
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                // Make me nice
+                //throw new Exception(string.Join("; ", ex.EntityValidationErrors.SelectMany(e => e.ValidationErrors.Select(ve => ve.ErrorMessage))));
+                return new ErrorResponse(string.Join("; ", ex.EntityValidationErrors.SelectMany(e => e.ValidationErrors.Select(ve => ve.ErrorMessage))));
+            }
+            
 
             UpdateClients();
 

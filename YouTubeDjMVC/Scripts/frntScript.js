@@ -17,14 +17,20 @@
                 dataType: 'json',
                 data: JSON.stringify(video)
             })
-                .success(function () {
-                    $scope.resultts = [];
-                    $scope.search = {};
-                    //$scope.getVideoList();
-                })
-                .error(function (data) {
-                    $scope.errorMessage = data.message;
-                });
+            .success(function ($data) {
+                if (!$data.Success) {
+                    $scope.errorMessage = $data.Message;
+                }
+                $scope.resultts = [];
+                $scope.search = {};
+            })
+            .error(function ($data) {
+                alert("bye");
+                if (!$data.Success) {
+                    alert($data.Message);
+                    $scope.errorMessage = $data.Message;
+                }
+            });
         };
 
         $scope.getVideoList = function () {
