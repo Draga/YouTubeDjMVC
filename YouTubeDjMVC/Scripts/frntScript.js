@@ -45,7 +45,22 @@
                     //TODO: use json messages for videoList.php
                     $scope.errorMessage = data.message;
                 });
-
+            
+            $http({
+                url: '/api/VideoApi/GetNowPlaying',
+                method: "GET"
+            })
+                .success(function ($nowPlaying) {
+                    if ($nowPlaying == null) {
+                        $scope.nowPlaying = null;
+                    } else {
+                        $scope.nowPlaying = $nowPlaying.Title;
+                    }
+                })
+                .error(function (data) {
+                    //TODO: use json messages for videoList.php
+                    $scope.errorMessage = data.message;
+                });
            /* clearTimeout($scope.videoRefreshTimeout);
             $scope.videoRefreshTimeout = setTimeout(function () {
                 $scope.getVideoList();

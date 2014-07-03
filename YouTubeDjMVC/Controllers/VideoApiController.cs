@@ -19,7 +19,13 @@ namespace YouTubeDjMVC.Controllers
         // GET: api/VideoApi
         public IQueryable<Video> GetVideos()
         {
-            return db.Videos;
+            return db.Videos.Where(v => v.Status == PlayingStatus.Queued);
+        }
+
+        // GET: api/VideoApi/NowPlaying
+        public Video GetNowPlaying()
+        {
+            return db.Videos.FirstOrDefault(v => v.Status == PlayingStatus.Playing);
         }
 
         // POST: api/VideoApi
@@ -60,7 +66,13 @@ namespace YouTubeDjMVC.Controllers
             Video firstVideo = db.Videos.FirstOrDefault();
             if (firstVideo != null)
             {
-                db.Videos.Remove(firstVideo);
+                firstVideo.Status = PlayingStatus.Playing;
+                foreach (var video in db.Videos.Where(v => v.Status == PlayingStatus.Playing))
+                {
+                    video.Status = PlayingStatus.Played;
+                }
+
+                //db.Videos.Remove(firstVideo);
                 db.SaveChanges();
             }
 

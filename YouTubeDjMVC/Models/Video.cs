@@ -43,6 +43,6 @@ namespace YouTubeDjMVC.Models
 
         [Required]
         [DefaultValue(false)]
-        public PlayingStatus Status { get; private set; }
+        public PlayingStatus Status { get; set; }
     }
 }
