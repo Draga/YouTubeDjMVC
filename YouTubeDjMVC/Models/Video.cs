@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
 namespace YouTubeDjMVC.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using System.Data.Entity;
-    using System.Dynamic;
 
     public class Video
     {
@@ -41,5 +40,9 @@ namespace YouTubeDjMVC.Models
 
         [Required]
         public DateTime Created { get; private set; }
+
+        [Required]
+        [DefaultValue(false)]
+        public PlayingStatus Status { get; private set; }
     }
 }

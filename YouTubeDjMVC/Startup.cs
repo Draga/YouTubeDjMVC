@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNet.SignalR;
+﻿using System.Data.Entity;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Owin;
+using YouTubeDjMVC.Models;
 
 [assembly: OwinStartupAttribute(typeof(YouTubeDjMVC.Startup))]
 namespace YouTubeDjMVC
@@ -9,6 +11,8 @@ namespace YouTubeDjMVC
     {
         public void Configuration(IAppBuilder app)
         {
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<VideoDbContext, Configuration>()); 
+
             ConfigureAuth(app);
 
             app.MapSignalR(new HubConfiguration() { EnableDetailedErrors = true });
