@@ -6,7 +6,7 @@
         $scope.results = [];
         $scope.errorMessage = '';
         $scope.videos = [];
-        $scope.videoRefreshTimeout = [];
+        //$scope.videoRefreshTimeout = [];
 
         this.addVideo = function (video) {
             $scope.errorMessage = '';
@@ -18,9 +18,9 @@
                 data: JSON.stringify(video)
             })
                 .success(function () {
-                    $scope.results = [];
+                    $scope.resultts = [];
                     $scope.search = {};
-                    $scope.getVideoList();
+                    //$scope.getVideoList();
                 })
                 .error(function (data) {
                     $scope.errorMessage = data.message;
@@ -40,10 +40,10 @@
                     $scope.errorMessage = data.message;
                 });
 
-            clearTimeout($scope.videoRefreshTimeout);
+           /* clearTimeout($scope.videoRefreshTimeout);
             $scope.videoRefreshTimeout = setTimeout(function () {
                 $scope.getVideoList();
-            }, 60000);
+            }, 60000);*/
         };
 
         this.search = function () {
@@ -81,4 +81,20 @@
 $(document).ready(function () {
     $('input#searchText').focus();
     //$('input#searchText').typeahead();
+    
+    /** SIGNALR **/
+
+    // Proxy created on the fly
+    //var videoHub = $.connection.videoHub;
+    alert("2" + $.connection.VideoHub);
+    alert("1" + $.connection.videoHub);
+   
+
+    // Declare a function on the chat hub so the server can invoke it
+    videoHub.VideoAdded = function () {
+        alert("Video Added");
+    };
+    
+    // Start the connection
+    $.connection.hub.start();
 });

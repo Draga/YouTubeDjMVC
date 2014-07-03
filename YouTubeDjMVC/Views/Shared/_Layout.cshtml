@@ -16,6 +16,8 @@
 
     @Styles.Render("~/Content/css")
 
+    @Scripts.Render("~/Scripts/jquery.signalR-2.1.0.js")
+    <script src="/signalr/hubs" type="text/javascript"></script>
     @RenderSection("scripts", required: false)
 </head>
 <body>

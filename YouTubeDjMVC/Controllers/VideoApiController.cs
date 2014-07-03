@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Microsoft.AspNet.SignalR;
+using YouTubeDjMVC.Hubs;
 using YouTubeDjMVC.Models;
 using YouTubeDjMVC.Models.Responses;
 
@@ -24,6 +26,7 @@ namespace YouTubeDjMVC.Controllers
         {
             var video = new Video(youTubeVideo);
             db.Videos.Add(video);
+
             // TODO: validate
             //IEnumerable<DbEntityValidationResult> validationErrors = db.GetValidationErrors();
             //if (validationErrors.Any())
@@ -31,9 +34,18 @@ namespace YouTubeDjMVC.Controllers
             //    //return BadRequest(ModelState);
             //    return new ErrorResponse("Validation error" + validationErrors.Select(e=>e.Entry.CurrentValues.PropertyNames));
             //}
+
             db.SaveChanges();
 
+            UpdateClients();
+
             return new SuccessResponse();
+        }
+
+        private static void UpdateClients()
+        {
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<VideoHub>();
+            hubContext.Clients.All.VideoAdded();
         }
 
         [ResponseType(typeof(Video))]
@@ -47,6 +59,9 @@ namespace YouTubeDjMVC.Controllers
                 db.Videos.Remove(firstVideo);
                 db.SaveChanges();
             }
+
+            UpdateClients();
+
             return firstVideo;
         }
 
