@@ -17,9 +17,18 @@ namespace YouTubeDjMVC.Controllers
         private VideoDbContext db = new VideoDbContext();
 
         // GET: api/VideoApi
-        public IQueryable<Video> GetVideos()
+        public VideoData GetVideoData()
         {
-            return db.Videos.Where(v => v.Status == PlayingStatus.Queued);
+            var videoData = new VideoData
+            {
+                Videos = db.Videos.Where(v => v.Status == PlayingStatus.Queued),
+            };
+            videoData.TotalTime = videoData.Videos
+                .Select(v => v.Length)
+                .DefaultIfEmpty()
+                .ToList()
+                .Aggregate((l1, l2) => l1 + l2);
+            return videoData;
         }
 
         // GET: api/VideoApi/NowPlaying

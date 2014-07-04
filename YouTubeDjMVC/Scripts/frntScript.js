@@ -6,6 +6,7 @@
         $scope.results = [];
         $scope.errorMessage = '';
         $scope.videos = [];
+        $scope.nowPlayingPercent = 0;
         //$scope.videoRefreshTimeout = [];
 
         this.addVideo = function (video) {
@@ -35,11 +36,12 @@
 
         $scope.getVideoList = function () {
             $http({
-                url: '/api/VideoApi/GetVideos',
+                url: '/api/VideoApi/GetVideoData',
                 method: "GET"
             })
-                .success(function (videos) {
-                    $scope.videos = videos;
+                .success(function (videoData) {
+                    $scope.videos = videoData.Videos;
+                    $scope.totalTime = videoData.TotalTime;
                 })
                 .error(function (data) {
                     //TODO: use json messages for videoList.php
@@ -62,8 +64,10 @@
 
                     if (nowPlaying == null) {
                         $scope.nowPlaying = null;
+                        $scope.nowPlayingPercent = 0;
                     } else {
                         $scope.nowPlaying = nowPlaying;
+                        $scope.nowPlayingPercent = parseSeconds(nowPlaying.PlayedTime) * 100 / parseSeconds(nowPlaying.Length);
 
                         var autoUpdateNowPlaying = function () {
                             if ($scope.nowPlaying != null) {
@@ -77,6 +81,7 @@
                                     currentSeconds++;
                                     var newTime = formatSeconds(currentSeconds);
                                     $scope.nowPlaying.PlayedTime = newTime;
+                                    $scope.nowPlayingPercent = parseSeconds(nowPlaying.PlayedTime) * 100 / parseSeconds(nowPlaying.Length);
                                 }
                             }
                             

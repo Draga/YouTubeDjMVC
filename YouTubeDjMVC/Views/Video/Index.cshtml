@@ -35,11 +35,17 @@
     </div>
 
     <div class="row">&nbsp;</div>
+
     <div class="row" ng-show="nowPlaying.Title">
         <h2>Now Playing: {{nowPlaying.Title}} ({{nowPlaying.PlayedTime}}/{{nowPlaying.Length}})</h2>
+        <div class="progress">
+            <div id="nowPlayingProgress" class="progress-bar active progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: {{ nowPlayingPercent }}%">
+            </div>
+        </div>
     </div>
+
     <div class="row">
-        <h2>Q ({{videos.length}})</h2>
+        <h2>Q ({{videos.length}} - {{totalTime}})</h2>
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="video in videos">{{video.Title}}</li>
         </ul>
