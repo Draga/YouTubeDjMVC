@@ -40,6 +40,8 @@ namespace YouTubeDjMVC.Models
 
         [Required]
         public DateTime Created { get; private set; }
+
+        public string UserName { get; set; }
  
         [Required]
         [DefaultValue(false)]

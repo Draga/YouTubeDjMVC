@@ -3,6 +3,8 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.SignalR;
 using YouTubeDjMVC.Hubs;
 using YouTubeDjMVC.Models;
@@ -14,7 +16,23 @@ namespace YouTubeDjMVC.Controllers
 
     public class VideoApiController : ApiController
     {
+        /// <summary>
+        /// Application DB context
+        /// </summary>
+        protected ApplicationDbContext ApplicationDbContext { get; set; }
+
+        /// <summary>
+        /// User manager - attached to application DB context
+        /// </summary>
+        protected UserManager<ApplicationUser> UserManager { get; set; }
+
         private VideoDbContext db = new VideoDbContext();
+
+        public VideoApiController()
+        {
+            this.ApplicationDbContext = new ApplicationDbContext();
+            this.UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this.ApplicationDbContext));
+        }
 
         // GET: api/VideoApi
         public VideoData GetVideoData()
@@ -44,6 +62,11 @@ namespace YouTubeDjMVC.Controllers
             try
             {
                 var video = new Video(youTubeVideo);
+
+                string currentUserId = User.Identity.GetUserId();
+                ApplicationUser currentUser = ApplicationDbContext.Users.FirstOrDefault(x => x.Id == currentUserId);
+                video.UserName = currentUser.UserName;
+
                 db.Videos.Add(video);
 
                 db.SaveChanges();
