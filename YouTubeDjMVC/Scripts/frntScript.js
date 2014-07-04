@@ -35,11 +35,12 @@
 
         $scope.getVideoList = function () {
             $http({
-                url: '/api/VideoApi/GetVideos',
+                url: '/api/VideoApi/GetVideoData',
                 method: "GET"
             })
-                .success(function (videos) {
-                    $scope.videos = videos;
+                .success(function (videoData) {
+                    $scope.videos = videoData.Videos;
+                    $scope.totalTime = videoData.TotalTime;
                 })
                 .error(function (data) {
                     //TODO: use json messages for videoList.php
@@ -48,7 +49,6 @@
         };
         
         $scope.getNowPlaying = function () {
-            
             $http({
                 url: '/api/VideoApi/GetNowPlaying',
                 method: "GET"
