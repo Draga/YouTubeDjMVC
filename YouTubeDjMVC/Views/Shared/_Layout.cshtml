@@ -18,10 +18,12 @@
     @Scripts.Render("~/Scripts/jquery.signalR-2.1.0.js")
     <script src="/signalr/hubs" type="text/javascript"></script>
     @RenderSection("scripts", required: false)
+    <link rel="shortcut icon" href="/favicon.png" />
 </head>
 <body>
     <header class="page-header text-center">
         <h1>
+            <img src="/Images/logo.png" alt="YoutTube DJ" height="40" width="48"/>
             YoutTube DJ
             <small>A collaborative video queue</small>
             @if (HttpContext.Current.User.Identity.IsAuthenticated)

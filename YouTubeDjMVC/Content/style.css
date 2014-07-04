@@ -51,3 +51,7 @@ input.ng-valid.ng-dirty {
         transform: rotate(360deg);
     }
 }
+
+.progress {
+    height: 2px;
+}
