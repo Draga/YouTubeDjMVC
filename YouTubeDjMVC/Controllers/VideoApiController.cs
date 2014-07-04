@@ -69,6 +69,11 @@ namespace YouTubeDjMVC.Controllers
         [System.Web.Http.HttpGet]
         public Video PopVideo()
         {
+            foreach (var video in db.Videos.Where(v => v.Status == PlayingStatus.Playing))
+            {
+                video.Status = PlayingStatus.Played;
+            }
+
             Video firstVideo = db.Videos.FirstOrDefault(v => v.Status == PlayingStatus.Queued);
             if (firstVideo != null)
             {
@@ -76,10 +81,6 @@ namespace YouTubeDjMVC.Controllers
                 //db.Videos.Remove(firstVideo);
             }
 
-            foreach (var video in db.Videos.Where(v => v.Status == PlayingStatus.Playing))
-            {
-                video.Status = PlayingStatus.Played;
-            }
 
             db.SaveChanges();
 
