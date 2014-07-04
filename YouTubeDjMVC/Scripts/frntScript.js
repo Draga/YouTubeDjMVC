@@ -39,7 +39,7 @@
                 method: "GET"
             })
                 .success(function (videoData) {
-                    $scope.videoData = videoData.Videos;
+                    $scope.videos = videoData.Videos;
                     $scope.totalTime = videoData.TotalTime;
                 })
                 .error(function (data) {
