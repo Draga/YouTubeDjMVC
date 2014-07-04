@@ -45,9 +45,11 @@
     </div>
 
     <div class="row">
-        <h2>Q ({{videos.length}} - {{totalTime}})</h2>
+        <h2>Q ({{videos.length}}) - ({{totalTime}})</h2>
         <ul class="list-group">
-            <li class="list-group-item" ng-repeat="video in videos">{{video.Title}}</li>
+            <li class="list-group-item beforeEnd-{{video.BeforeEndOfDay}}" ng-repeat="video in videos">
+                {{video.Title}} - ({{video.Length}})
+            </li>
         </ul>
     </div>
 </div>

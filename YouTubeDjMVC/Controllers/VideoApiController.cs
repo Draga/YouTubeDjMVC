@@ -46,6 +46,16 @@ namespace YouTubeDjMVC.Controllers
                 .DefaultIfEmpty()
                 .ToList()
                 .Aggregate((l1, l2) => l1 + l2);
+
+            var totalTime = new TimeSpan();
+            var now = DateTime.Now.TimeOfDay;
+            var endOfDay = new TimeSpan(17, 30, 0);
+            
+            foreach (var video in videoData.Videos)
+            {
+                totalTime += video.Length;
+                video.BeforeEndOfDay = !(now + totalTime > endOfDay);
+            }
             return videoData;
         }
 
