@@ -17,18 +17,18 @@
                 dataType: 'json',
                 data: JSON.stringify(video)
             })
-            .success(function ($data) {
-                if (!$data.Success) {
-                    $scope.errorMessage = $data.Message;
+            .success(function (data) {
+                if (!data.Success) {
+                    $scope.errorMessage = data.Message;
                 }
                 $scope.results = [];
                 $scope.search = {};
             })
-            .error(function ($data) {
+            .error(function (data) {
                 alert("bye");
-                if (!$data.Success) {
-                    alert($data.Message);
-                    $scope.errorMessage = $data.Message;
+                if (!data.Success) {
+                    alert(data.Message);
+                    $scope.errorMessage = data.Message;
                 }
             });
         };
@@ -38,8 +38,8 @@
                 url: '/api/VideoApi/GetVideos',
                 method: "GET"
             })
-                .success(function ($videos) {
-                    $scope.videos = $videos;
+                .success(function (videos) {
+                    $scope.videos = videos;
                 })
                 .error(function (data) {
                     //TODO: use json messages for videoList.php
@@ -50,11 +50,11 @@
                 url: '/api/VideoApi/GetNowPlaying',
                 method: "GET"
             })
-                .success(function ($nowPlaying) {
-                    if ($nowPlaying == null) {
+                .success(function (nowPlaying) {
+                    if (nowPlaying == null) {
                         $scope.nowPlaying = null;
                     } else {
-                        $scope.nowPlaying = $nowPlaying.Title;
+                        $scope.nowPlaying = nowPlaying.Title;
                     }
                 })
                 .error(function (data) {
