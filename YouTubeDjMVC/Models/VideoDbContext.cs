@@ -36,7 +36,7 @@ namespace YouTubeDjMVC.Models
                 var video = videoEntity;
                 var alreadyExists = this.Videos.Any(v => v.YouTubeID == video.YouTubeID && v.Status != PlayingStatus.Played);
                 
-                if (alreadyExists)
+                if (alreadyExists && entityEntry.State == EntityState.Added)
                 {
                     var list = new List<DbValidationError>
                     {

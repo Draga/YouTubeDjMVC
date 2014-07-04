@@ -45,7 +45,7 @@ namespace YouTubeDjMVC.Controllers
                 //throw new Exception(string.Join("; ", ex.EntityValidationErrors.SelectMany(e => e.ValidationErrors.Select(ve => ve.ErrorMessage))));
                 return new ErrorResponse(string.Join("; ", ex.EntityValidationErrors.SelectMany(e => e.ValidationErrors.Select(ve => ve.ErrorMessage))));
             }
-            
+
 
             UpdateClients();
 
@@ -63,18 +63,19 @@ namespace YouTubeDjMVC.Controllers
         [System.Web.Http.HttpGet]
         public Video PopVideo()
         {
-            Video firstVideo = db.Videos.FirstOrDefault();
+            Video firstVideo = db.Videos.FirstOrDefault(v => v.Status == PlayingStatus.Queued);
             if (firstVideo != null)
             {
                 firstVideo.Status = PlayingStatus.Playing;
-                foreach (var video in db.Videos.Where(v => v.Status == PlayingStatus.Playing))
-                {
-                    video.Status = PlayingStatus.Played;
-                }
-
                 //db.Videos.Remove(firstVideo);
-                db.SaveChanges();
             }
+
+            foreach (var video in db.Videos.Where(v => v.Status == PlayingStatus.Playing))
+            {
+                video.Status = PlayingStatus.Played;
+            }
+
+            db.SaveChanges();
 
             UpdateClients();
 
