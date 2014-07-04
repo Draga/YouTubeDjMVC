@@ -69,7 +69,7 @@ namespace YouTubeDjMVC.Controllers
         [System.Web.Http.HttpGet]
         public Video PopVideo()
         {
-            Video firstVideo = db.Videos.FirstOrDefault(v => v.Status == PlayingStatus.Queued || v.Status == PlayingStatus.Playing);
+            Video firstVideo = db.Videos.FirstOrDefault(v => v.Status == PlayingStatus.Queued);
             if (firstVideo != null)
             {
                 firstVideo.Status = PlayingStatus.Playing;
