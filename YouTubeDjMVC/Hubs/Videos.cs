@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
 using YouTubeDjMVC.Models;
 
@@ -29,6 +30,18 @@ namespace YouTubeDjMVC.Hubs
             db.SaveChanges();
 
             Clients.All.NowPlayingUpdated();
+        }
+
+        public override Task OnConnected()
+        {
+            Clients.All.UpdateNowPlaying();
+
+            return base.OnConnected();
+        }
+
+        public override Task OnDisconnected()
+        {
+            return base.OnDisconnected();
         }
     }
 }

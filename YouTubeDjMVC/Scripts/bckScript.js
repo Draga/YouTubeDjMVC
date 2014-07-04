@@ -16,6 +16,13 @@ $(function () {
         }*/
     };
 
+    videoHub.client.updateNowPlaying = function () {
+
+        console.log("update requested");
+        clearTimeout(playerTimeout);
+        updatePlayed();
+    };
+    
     $.connection.hub.logging = true;
 
     // Start the connection
@@ -44,6 +51,10 @@ function playNextVideo() {
 
 function updatePlayed() {
 
+    if (player.getPlayerState() == YT.PlayerState.ENDED) {
+        return;
+    }
+    
     var currentTime = player.getCurrentTime();
     console.log('send time update of ' + currentTime);
 
