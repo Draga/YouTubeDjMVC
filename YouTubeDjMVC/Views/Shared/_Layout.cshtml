@@ -11,12 +11,10 @@
     <!--<script type="application/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>-->
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-    @Scripts.Render("~/Scripts/frntScript.js")
     @Scripts.Render("~/Scripts/Utlty.js")
+    @Scripts.Render("~/Scripts/frntScript.js")
     @*@Scripts.Render("~/bundles/bootstrap")*@
-
     @Styles.Render("~/Content/css")
-
     @Scripts.Render("~/Scripts/jquery.signalR-2.1.0.js")
     <script src="/signalr/hubs" type="text/javascript"></script>
     @RenderSection("scripts", required: false)
@@ -33,7 +31,6 @@
         </h1>
     </header>
     <div class="container">
-
         @RenderBody()
     </div>
 </body>

@@ -6,6 +6,7 @@
         $scope.results = [];
         $scope.errorMessage = '';
         $scope.videos = [];
+        $scope.nowPlayingPercent = 0;
         //$scope.videoRefreshTimeout = [];
 
         this.addVideo = function (video) {
@@ -62,8 +63,10 @@
 
                     if (nowPlaying == null) {
                         $scope.nowPlaying = null;
+                        $scope.nowPlayingPercent = 0;
                     } else {
                         $scope.nowPlaying = nowPlaying;
+                        $scope.nowPlayingPercent = parseSeconds(nowPlaying.PlayedTime) * 100 / parseSeconds(nowPlaying.Length);
                     }
 
                 })
