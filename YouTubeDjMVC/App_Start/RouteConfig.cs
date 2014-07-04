@@ -13,9 +13,11 @@ namespace YouTubeDjMVC
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapMvcAttributeRoutes();
+
             routes.MapRoute(
-                name: "Default",
-                url: "{action}/{id}",
+                name: "Others",
+                url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Video", action = "Index", id = UrlParameter.Optional }
             );
         }

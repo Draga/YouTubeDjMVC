@@ -50,11 +50,11 @@ namespace YouTubeDjMVC
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "591037031912-1hj7fl5d9o3vjshgk5u2lmj31cgfe34g.apps.googleusercontent.com",
+                ClientSecret = "Astb1ZBPn5L7S8qTD6M7xCkE"
+            });
         }
     }
 }

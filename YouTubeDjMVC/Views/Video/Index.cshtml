@@ -39,9 +39,9 @@
         <h2>Now Playing: {{nowPlaying}}</h2>
     </div>
     <div class="row">
-        <h2>Q ({{videos.length}})</h2>
+        <h2>Q ({{videoData.length}} - {{totalTime}})</h2>
         <ul class="list-group">
-            <li class="list-group-item" ng-repeat="video in videos">{{video.Title}}</li>
+            <li class="list-group-item" ng-repeat="video in videos">{{videoData.Title}}</li>
         </ul>
     </div>
 </div>

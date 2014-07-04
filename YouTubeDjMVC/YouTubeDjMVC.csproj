@@ -201,6 +201,7 @@
     <Compile Include="Models\Responses\Response.cs" />
     <Compile Include="Models\Responses\SuccessResponse.cs" />
     <Compile Include="Models\Video.cs" />
+    <Compile Include="Models\VideoData.cs" />
     <Compile Include="Models\VideoDbContext.cs" />
     <Compile Include="Models\YouTubeVideo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

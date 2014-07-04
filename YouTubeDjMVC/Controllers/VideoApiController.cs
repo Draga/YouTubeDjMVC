@@ -17,9 +17,17 @@ namespace YouTubeDjMVC.Controllers
         private VideoDbContext db = new VideoDbContext();
 
         // GET: api/VideoApi
-        public IQueryable<Video> GetVideos()
+        public VideoData GetVideoData()
         {
-            return db.Videos.Where(v => v.Status == PlayingStatus.Queued);
+            var videoData = new VideoData
+            {
+                Videos = db.Videos.Where(v => v.Status == PlayingStatus.Queued),
+            };
+            videoData.TotalTime = videoData.Videos
+                .Select(v => v.Length)
+                .ToList()
+                .Aggregate((l1, l2) => l1 + l2);
+            return videoData;
         }
 
         // GET: api/VideoApi/NowPlaying
@@ -47,15 +55,21 @@ namespace YouTubeDjMVC.Controllers
             }
 
 
-            UpdateClients();
+            UpdateClientsVideos();
 
             return new SuccessResponse();
         }
 
-        private static void UpdateClients()
+        private static void UpdateClientsVideos()
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<Videos>();
             hubContext.Clients.All.VideoAdded();
+        }
+
+        private static void UpdateClientsNowPlaying()
+        {
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<Videos>();
+            hubContext.Clients.All.NowPlayingUpdated();
         }
 
         [ResponseType(typeof(Video))]
@@ -63,6 +77,11 @@ namespace YouTubeDjMVC.Controllers
         [System.Web.Http.HttpGet]
         public Video PopVideo()
         {
+            foreach (var video in db.Videos.Where(v => v.Status == PlayingStatus.Playing))
+            {
+                video.Status = PlayingStatus.Played;
+            }
+
             Video firstVideo = db.Videos.FirstOrDefault(v => v.Status == PlayingStatus.Queued);
             if (firstVideo != null)
             {
@@ -70,14 +89,11 @@ namespace YouTubeDjMVC.Controllers
                 //db.Videos.Remove(firstVideo);
             }
 
-            foreach (var video in db.Videos.Where(v => v.Status == PlayingStatus.Playing))
-            {
-                video.Status = PlayingStatus.Played;
-            }
 
             db.SaveChanges();
 
-            UpdateClients();
+            UpdateClientsVideos();
+            UpdateClientsNowPlaying();
 
             return firstVideo;
         }
