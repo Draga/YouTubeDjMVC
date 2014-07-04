@@ -29,12 +29,25 @@ namespace YouTubeDjMVC.Hubs
 
             db.SaveChanges();
 
-            Clients.All.NowPlayingUpdated();
+            Clients.All.NowPlayingUpdated(video);
         }
 
         public override Task OnConnected()
         {
             Clients.All.UpdateNowPlaying();
+
+            var videoData = new VideoData
+            {
+                Videos = db.Videos.Where(v => v.Status == PlayingStatus.Queued),
+            };
+
+            videoData.TotalTime = videoData.Videos
+                .Select(v => v.Length)
+                .DefaultIfEmpty()
+                .ToList()
+                .Aggregate((l1, l2) => l1 + l2);
+
+            Clients.Caller.VideoFullUpdate(videoData);
 
             return base.OnConnected();
         }

@@ -64,7 +64,7 @@ function updatePlayed() {
 
     var timeout = 30 * 1000;
     if (currentTime == null || currentTime <= 10) {
-        timeout = 1 * 1000;
+        timeout = 2 * 1000;
     }
 
     console.log('sending next update in ' + timeout + ' milliseconds');

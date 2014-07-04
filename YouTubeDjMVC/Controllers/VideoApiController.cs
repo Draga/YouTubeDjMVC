@@ -12,8 +12,6 @@ using YouTubeDjMVC.Models.Responses;
 
 namespace YouTubeDjMVC.Controllers
 {
-    using System.Collections.Generic;
-
     public class VideoApiController : ApiController
     {
         /// <summary>
@@ -34,27 +32,6 @@ namespace YouTubeDjMVC.Controllers
             this.UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this.ApplicationDbContext));
         }
 
-        // GET: api/VideoApi
-        public VideoData GetVideoData()
-        {
-            var videoData = new VideoData
-            {
-                Videos = db.Videos.Where(v => v.Status == PlayingStatus.Queued),
-            };
-            videoData.TotalTime = videoData.Videos
-                .Select(v => v.Length)
-                .DefaultIfEmpty()
-                .ToList()
-                .Aggregate((l1, l2) => l1 + l2);
-            return videoData;
-        }
-
-        // GET: api/VideoApi/NowPlaying
-        public Video GetNowPlaying()
-        {
-            return db.Videos.FirstOrDefault(v => v.Status == PlayingStatus.Playing);
-        }
-
         // POST: api/VideoApi
         [ResponseType(typeof(Response))]
         public Response PostYouTubeVideo(dynamic youTubeVideo)
@@ -70,6 +47,10 @@ namespace YouTubeDjMVC.Controllers
                 db.Videos.Add(video);
 
                 db.SaveChanges();
+
+                VideoAdded(video);
+
+                return new SuccessResponse();
             }
             catch (DbEntityValidationException ex)
             {
@@ -79,21 +60,24 @@ namespace YouTubeDjMVC.Controllers
             }
 
 
-            UpdateClientsVideos();
-
-            return new SuccessResponse();
         }
 
-        private static void UpdateClientsVideos()
+        private static void VideoAdded(Video video)
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<Videos>();
-            hubContext.Clients.All.VideoAdded();
+            hubContext.Clients.All.VideoAdded(video);
         }
 
-        private static void UpdateClientsNowPlaying()
+        private static void VideoRemoved(Video video)
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<Videos>();
-            hubContext.Clients.All.NowPlayingUpdated();
+            hubContext.Clients.All.VideoRemoved(video);
+        }
+
+        private static void UpdateClientsNowPlaying(Video video)
+        {
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<Videos>();
+            hubContext.Clients.All.NowPlayingUpdated(video);
         }
 
         [ResponseType(typeof(Video))]
@@ -116,8 +100,8 @@ namespace YouTubeDjMVC.Controllers
 
             db.SaveChanges();
 
-            UpdateClientsVideos();
-            UpdateClientsNowPlaying();
+            VideoRemoved(firstVideo);
+            UpdateClientsNowPlaying(firstVideo);
 
             return firstVideo;
         }
