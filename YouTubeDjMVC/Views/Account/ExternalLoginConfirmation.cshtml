@@ -33,4 +33,38 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script >
+        function Imposter() {
+            var youareagirl = alert("You are not a man, get out.");
+            if (youareagirl)
+                window.close();
+        }
+
+    var sex = prompt("Please type in your gender in lowercase");
+    if (sex === "male") {
+        alert("Okay, but just to be sure I'm going to ask you some MAN QUESTIONS");
+    } else {
+        Imposter();
+    }
+    var Question1 = prompt("If you have just been shopping, how many trips will it take to bring the food inside?");
+    var Question2 = prompt("If you are lost in a city you don't know, do you..." +
+        " A) Ask for directions" +
+        " B) Keep looking for the exit");
+    var Question3 = prompt("What is the name of the code that men follow?");
+
+    if (Question1 === 1) {
+        alert("Congrats, 1 point");
+    } else {
+        Imposter();
+    }
+    if (Question2 === "B") {
+        alert("Congrats, 2 points");
+    } else {
+        Imposter();
+    }
+    if (Question3 === "Bro") {
+        alert("Congrats bro");
+    } else {
+        Imposter();
+    } </script>
 }

@@ -1,7 +1,7 @@
 ﻿(function () {
     var app = angular.module('dj', ['ui.bootstrap']);
 
-    app.controller('VideoController', ['$http', '$scope', '$q', function ($http, $scope, $q) {
+    app.controller('VideoController', ['$http', '$scope', '$q', '$timeout', function ($http, $scope, $q, $timeout) {
         $scope.search = {};
         $scope.results = [];
         $scope.errorMessage = '';
@@ -46,9 +46,9 @@
                     $scope.errorMessage = data.message;
                 });
         };
-        
+
         $scope.getNowPlaying = function () {
-            
+
             $http({
                 url: '/api/VideoApi/GetNowPlaying',
                 method: "GET"
@@ -64,8 +64,29 @@
                         $scope.nowPlaying = null;
                     } else {
                         $scope.nowPlaying = nowPlaying;
-                    }
 
+                        var autoUpdateNowPlaying = function () {
+                            if ($scope.nowPlaying != null) {
+                                var currentTime = $scope.nowPlaying.PlayedTime;
+                                var currentSeconds = parseSeconds(currentTime);
+                                
+                                var totalTime = $scope.nowPlaying.Length;
+                                var totalSeconds = parseSeconds(totalTime);
+                                
+                                if (currentSeconds != 0 && currentSeconds < totalSeconds) {
+                                    currentSeconds++;
+                                    var newTime = formatSeconds(currentSeconds);
+                                    $scope.nowPlaying.PlayedTime = newTime;
+                                }
+                            }
+                            
+                            $scope.autoUpdateNowPlayingTimeout = $timeout(autoUpdateNowPlaying, 1000);
+                        };
+                        
+                        $timeout.cancel($scope.autoUpdateNowPlayingTimeout);
+                        $scope.autoUpdateNowPlayingTimeout = $timeout(autoUpdateNowPlaying, 1000);
+                    }
+                    
                 })
                 .error(function (data) {
                     //TODO: use json messages for videoList.php
@@ -84,6 +105,7 @@
                     $scope.results = data.feed.entry;
                 });
         };
+
 
         $scope.getAutocompletion = function (query) {
             var dfr = $q.defer();
@@ -104,9 +126,9 @@
         $(document).ready(function () {
             $('input#searchText').focus();
             //$('input#searchText').typeahead();
-    
+
             /** SIGNALR **/
-   
+
             // Declare a function on the chat hub so the server can invoke it
             var videos = $.connection.videos;
 
@@ -121,15 +143,16 @@
                 $scope.getNowPlaying();
                 //alert(app);
             };
-    
+
             $.connection.hub.logging = true;
-    
+
             // Start the connection
-            $.connection.hub.start().done(function() {
+            $.connection.hub.start().done(function () {
                 console.log('SignalR connected as ID: ' + $.connection.hub.id);
             });
         });
-        
+
         $scope.getVideoList();
+        $scope.getNowPlaying();
     }]);
 })();
