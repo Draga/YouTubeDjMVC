@@ -10,15 +10,19 @@ using YouTubeDjMVC.Models;
 
 namespace YouTubeDjMVC.Controllers
 {
+    [Authorize]
     public class VideoController : Controller
     {
-        private VideoDbContext db = new VideoDbContext();
+        private readonly VideoDbContext db = new VideoDbContext();
 
         // GET: Video
         public ActionResult Index()
         {
             return View(db.Videos.ToList());
         }
+
+        [AllowAnonymous]
+        [Route("player/")]
         public ActionResult Player()
         {
             return View();
