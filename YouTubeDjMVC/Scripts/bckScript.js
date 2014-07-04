@@ -1,13 +1,59 @@
 ﻿var player;
+var playerTimeout;
+var currentVideo;
+var videoHub;
+
+$(function () {
+    console.log("document.ready");
+    
+    // Declare a function on the chat hub so the server can invoke it
+    videoHub = $.connection.videos;
+
+    videoHub.client.videoAdded = function () {
+        /*console.log("player status: " + player.getPlayerState());
+        if (player != null && (player.getPlayerState() == YT.PlayerState.ENDED || player.getPlayerState() == YT.PlayerState.CUED)) {
+            playNextVideo();
+        }*/
+    };
+
+    $.connection.hub.logging = true;
+
+    // Start the connection
+    $.connection.hub.start().done(function () {
+        console.log('SignalR connected as ID: ' + $.connection.hub.id);
+        playNextVideo();
+    });
+
+    console.log("document.ready end");
+});
 
 function playNextVideo() {
+
+    clearTimeout(playerTimeout);
+    
     $.getJSON("/api/VideoApi/PopVideo", function (video) {
-        player.loadVideoById(video.YouTubeID);
+        currentVideo = video;
+        
+        if (video != null) {
+            player.loadVideoById(video.YouTubeID);
+            updatePlayed();
+        }
+        
     });
 }
 
+function updatePlayed() {
+
+    if (currentVideo != null) {
+        videoHub.server.updatePlayTime(currentVideo.ID, player.getCurrentTime());
+    }
+    
+    playerTimeout = setTimeout("updatePlayed()", 5000);
+}
+
 function onPlayerReady(event) {
-    playNextVideo();
+    console.log('player ready');
+    //playNextVideo();
 }
 
 function onPlayerStateChange(event) {
@@ -39,7 +85,7 @@ function addVideoTitles() {
             part: "snippet",
             id: videoIDs.join(",")
         },
-        function(data) {
+        function (data) {
             alert(data);
         });
 }

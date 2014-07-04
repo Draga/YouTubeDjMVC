@@ -45,26 +45,33 @@
                     //TODO: use json messages for videoList.php
                     $scope.errorMessage = data.message;
                 });
+        };
+        
+        $scope.getNowPlaying = function () {
             
             $http({
                 url: '/api/VideoApi/GetNowPlaying',
                 method: "GET"
             })
                 .success(function (nowPlaying) {
+
+                    //Fix me
+                    if (nowPlaying != null && nowPlaying.PlayedTime == null) {
+                        nowPlaying.PlayedTime = "00:00:00";
+                    }
+
                     if (nowPlaying == null) {
                         $scope.nowPlaying = null;
                     } else {
-                        $scope.nowPlaying = nowPlaying.Title;
+                        $scope.nowPlaying = nowPlaying;
                     }
+
                 })
                 .error(function (data) {
                     //TODO: use json messages for videoList.php
                     $scope.errorMessage = data.message;
                 });
-           /* clearTimeout($scope.videoRefreshTimeout);
-            $scope.videoRefreshTimeout = setTimeout(function () {
-                $scope.getVideoList();
-            }, 60000);*/
+
         };
 
         this.search = function () {
@@ -106,6 +113,12 @@
             videos.client.videoAdded = function () {
                 //alert(scope);
                 $scope.getVideoList();
+                //alert(app);
+            };
+
+            videos.client.nowPlayingUpdated = function () {
+                //alert(scope);
+                $scope.getNowPlaying();
                 //alert(app);
             };
     

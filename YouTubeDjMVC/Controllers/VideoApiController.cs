@@ -47,15 +47,21 @@ namespace YouTubeDjMVC.Controllers
             }
 
 
-            UpdateClients();
+            UpdateClientsVideos();
 
             return new SuccessResponse();
         }
 
-        private static void UpdateClients()
+        private static void UpdateClientsVideos()
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<Videos>();
             hubContext.Clients.All.VideoAdded();
+        }
+
+        private static void UpdateClientsNowPlaying()
+        {
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<Videos>();
+            hubContext.Clients.All.NowPlayingUpdated();
         }
 
         [ResponseType(typeof(Video))]
@@ -77,7 +83,8 @@ namespace YouTubeDjMVC.Controllers
 
             db.SaveChanges();
 
-            UpdateClients();
+            UpdateClientsVideos();
+            UpdateClientsNowPlaying();
 
             return firstVideo;
         }

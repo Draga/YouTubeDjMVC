@@ -40,9 +40,11 @@ namespace YouTubeDjMVC.Models
 
         [Required]
         public DateTime Created { get; private set; }
-
+ 
         [Required]
         [DefaultValue(false)]
         public PlayingStatus Status { get; set; }
+
+        public TimeSpan? PlayedTime { get; set; }
     }
 }
