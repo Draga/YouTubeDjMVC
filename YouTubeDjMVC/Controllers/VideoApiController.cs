@@ -48,7 +48,7 @@ namespace YouTubeDjMVC.Controllers
                 .Aggregate((l1, l2) => l1 + l2);
 
             var totalTime = new TimeSpan();
-            var now = DateTime.Now.TimeOfDay;
+            var now = DateTime.UtcNow.TimeOfDay;
             var endOfDay = new TimeSpan(17, 30, 0);
             
             foreach (var video in videoData.Videos)
