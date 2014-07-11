@@ -55,3 +55,7 @@ input.ng-valid.ng-dirty {
 .progress {
     height: 2px;
 }
+
+.beforeEnd-false {
+    color: lightgrey;
+}
