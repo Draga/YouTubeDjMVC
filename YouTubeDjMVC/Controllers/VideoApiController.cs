@@ -49,7 +49,7 @@ namespace YouTubeDjMVC.Controllers
 
             var totalTime = new TimeSpan();
             var now = DateTime.UtcNow.TimeOfDay;
-            var endOfDay = new TimeSpan(17, 30, 0);
+            var endOfDay = new TimeSpan(17 - 1, 30, 0);
             
             foreach (var video in videoData.Videos)
             {
