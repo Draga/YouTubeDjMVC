@@ -14,7 +14,7 @@ using YouTubeDjMVC.Models;
 
 namespace YouTubeDjMVC.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class AccountController : Controller
     {
         private ApplicationUserManager _userManager;

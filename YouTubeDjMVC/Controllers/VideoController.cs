@@ -10,7 +10,7 @@ using YouTubeDjMVC.Models;
 
 namespace YouTubeDjMVC.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class VideoController : Controller
     {
         private readonly VideoDbContext db = new VideoDbContext();
