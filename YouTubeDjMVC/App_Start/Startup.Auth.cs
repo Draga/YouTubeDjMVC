@@ -52,8 +52,8 @@ namespace YouTubeDjMVC
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "591037031912-1hj7fl5d9o3vjshgk5u2lmj31cgfe34g.apps.googleusercontent.com",
-                ClientSecret = "Astb1ZBPn5L7S8qTD6M7xCkE"
+                ClientId = "20105751347-fsn977mei80umna9mtac5sidu2ja0e81.apps.googleusercontent.com",
+                ClientSecret = "AIzaSyDsiaTw9IIwTtf7KfQ-O-6tMZNYy357rkQ"
             });
         }
     }
